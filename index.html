@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Completa de Git y GitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            line-height: 1.6;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            padding: 15px;
+            font-size: 16px;
+        }
+        h1, h2, h3 {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+        p, li {
+            font-size: 0.95rem;
+            margin-bottom: 0.8rem;
+        }
+        pre, code {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #4a90e2;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        code {
+            display: block;
+        }
+        ul, ol {
+            margin: 0.5rem 0 0.5rem 1.2rem;
+        }
+        a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Menú colapsable para el índice */
+        .toc {
+            background-color: #2a2a2a;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .toc h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+        #toggle-toc {
+            display: none;
+        }
+        .toc-content {
+            display: none;
+        }
+        #toggle-toc:checked ~ .toc-content {
+            display: block;
+        }
+        .toc-label {
+            display: block;
+            background-color: #4a90e2;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .toc-label::before {
+            content: '☰ ';
+        }
+        #toggle-toc:checked ~ .toc-label::before {
+            content: '✕ ';
+        }
+        /* Ajustes para pantallas más grandes */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+                max-width: 800px;
+                margin: 0 auto;
+                font-size: 18px;
+            }
+            h1 {
+                font-size: 2.2rem;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            h3 {
+                font-size: 1.4rem;
+            }
+            p, li {
+                font-size: 1rem;
+            }
+            pre, code {
+                font-size: 0.9rem;
+                padding: 15px;
+            }
+            .toc {
+                padding: 15px;
+            }
+            .toc h2 {
+                font-size: 1.5rem;
+            }
+            .toc li {
+                font-size: 1rem;
+            }
+            .toc-label {
+                display: none;
+            }
+            .toc-content {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Guía Completa de Git y GitHub</h1>
+    <p style="text-align: center;">Para principiantes y usuarios intermedios<br>Elaborado por Grok 3<br>Fecha: 11 de mayo de 2025</p>
+
+    <div class="toc">
+        <input type="checkbox" id="toggle-toc">
+        <label for="toggle-toc" class="toc-label">Índice</label>
+        <div class="toc-content">
+            <h2>Índice</h2>
+            <ul>
+                <li><a href="#introduccion">1. Introducción</a></li>
+                <li><a href="#instalacion">2. Instalación y Configuración Inicial de Git</a>
+                    <ul>
+                        <li><a href="#instalacion-git">2.1 Instalación</a></li>
+                        <li><a href="#configurar-identidad">2.2 Configurar tu identidad</a></li>
+                        <li><a href="#verificar-config">2.3 Verificar la configuración</a></li>
+                    </ul>
+                </li>
+                <li><a href="#comandos-basicos">3. Comandos Básicos de Git</a>
+                    <ul>
+                        <li><a href="#inicializar-repo">3.1 Inicializar un repositorio</a></li>
+                        <li><a href="#add-archivos">3.2 Añadir archivos al staging</a></li>
+                        <li><a href="#hacer-commit">3.3 Hacer un commit</a></li>
+                        <li><a href="#ver-estado">3.4 Ver el estado del repositorio</a></li>
+                        <li><a href="#ver-historial">3.5 Ver el historial de commits</a></li>
+                        <li><a href="#crear-ramas">3.6 Crear y manejar ramas</a></li>
+                        <li><a href="#fusionar-ramas">3.7 Fusionar ramas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#conectar-github">4. Conectar con GitHub</a>
+                    <ul>
+                        <li><a href="#crear-repo-github">4.1 Crear un repositorio en GitHub</a></li>
+                        <li><a href="#vincular-repo">4.2 Vincular un repositorio local a GitHub</a></li>
+                        <li><a href="#subir-cambios">4.3 Subir cambios a GitHub</a></li>
+                        <li><a href="#clonar-repo">4.4 Clonar un repositorio de GitHub</a></li>
+                        <li><a href="#actualizar-repo">4.5 Actualizar tu repositorio local</a></li>
+                    </ul>
+                </li>
+                <li><a href="#ramas-github">5. Trabajar con ramas en GitHub</a>
+                    <ul>
+                        <li><a href="#subir-rama">5.1 Subir una rama a GitHub</a></li>
+                        <li><a href="#crear-pr">5.2 Crear un Pull Request</a></li>
+                    </ul>
+                </li>
+                <li><a href="#resolver-conflictos">6. Resolución de Conflictos</a></li>
+                <li><a href="#comandos-adicionales">7. Comandos Útiles Adicionales</a>
+                    <ul>
+                        <li><a href="#deshacer-cambios">7.1 Deshacer cambios</a></li>
+                        <li><a href="#revertir-commit">7.2 Revertir un commit</a></li>
+                        <li><a href="#ver-diferencias">7.3 Ver diferencias</a></li>
+                        <li><a href="#ignorar-archivos">7.4 Ignorar archivos</a></li>
+                    </ul>
+                </li>
+                <li><a href="#autenticacion-github">8. Autenticación en GitHub</a>
+                    <ul>
+                        <li><a href="#token-acceso">8.1 Configurar un token de acceso personal</a></li>
+                        <li><a href="#configurar-ssh">8.2 Configurar SSH (opcional)</a></li>
+                    </ul>
+                </li>
+                <li><a href="#buenas-practicas">9. Buenas Prácticas</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <section id="introduccion">
+        <h2>1. Introducción</h2>
+        <p>Esta guía cubre los comandos esenciales para usar Git, un sistema de control de versiones, y cómo conectarlo con GitHub, una plataforma para alojar repositorios. Está diseñada para ser clara y práctica, con ejemplos de comandos y buenas prácticas.</p>
+    </section>
+
+    <section id="instalacion">
+        <h2>2. Instalación y Configuración Inicial de Git</h2>
+        <section id="instalacion-git">
+            <h3>2.1 Instalación</h3>
+            <p>Descarga e instala Git desde <a href="https://git-scm.com">git-scm.com</a>. Sigue las instrucciones para tu sistema operativo (Windows, macOS, Linux).</p>
+        </section>
+        <section id="configurar-identidad">
+            <h3>2.2 Configurar tu identidad</h3>
+            <p>Establece tu nombre y correo electrónico para los commits:</p>
+            <pre><code>git config --global user.name "Tu Nombre"
+git config --global user.email "tu.email@ejemplo.com"</code></pre>
+        </section>
+        <section id="verificar-config">
+            <h3>2.3 Verificar la configuración</h3>
+            <p>Para ver la configuración actual:</p>
+            <pre><code>git config --list</code></pre>
+        </section>
+    </section>
+
+    <section id="comandos-basicos">
+        <h2>3. Comandos Básicos de Git</h2>
+        <section id="inicializar-repo">
+            <h3>3.1 Inicializar un repositorio</h3>
+            <p>Crea un nuevo repositorio Git en tu directorio actual:</p>
+            <pre><code>git init</code></pre>
+        </section>
+        <section id="add-archivos">
+            <h3>3.2 Añadir archivos al staging</h3>
+            <p>Añade archivos específicos o todos los cambios al área de staging:</p>
+            <pre><code>git add nombre_archivo
+git add .  # Añade todos los archivos modificados</code></pre>
+        </section>
+        <section id="hacer-commit">
+            <h3>3.3 Hacer un commit</h3>
+            <p>Guarda los cambios en el repositorio con un mensaje descriptivo:</p>
+            <pre><code>git commit -m "Mensaje descriptivo del commit"</code></pre>
+        </section>
+        <section id="ver-estado">
+            <h3>3.4 Ver el estado del repositorio</h3>
+            <p>Muestra el estado actual de los archivos:</p>
+            <pre><code>git status</code></pre>
+        </section>
+        <section id="ver-historial">
+            <h3>3.5 Ver el historial de commits</h3>
+            <p>Muestra el historial de commits en el repositorio:</p>
+            <pre><code>git log
+git log --oneline  # Versión resumida</code></pre>
+        </section>
+        <section id="crear-ramas">
+            <h3>3.6 Crear y manejar ramas</h3>
+            <p>Crea, cambia y elimina ramas para trabajar en paralelo:</p>
+            <pre><code>git branch nombre_rama  # Crear una rama
+git checkout nombre_rama  # Cambiar a una rama
+git checkout -b nombre_rama  # Crear y cambiar a una rama
+git branch -d nombre_rama  # Eliminar una rama</code></pre>
+        </section>
+        <section id="fusionar-ramas">
+            <h3>3.7 Fusionar ramas</h3>
+            <p>Combina los cambios de una rama en la rama actual:</p>
+            <pre><code>git merge nombre_rama</code></pre>
+        </section>
+    </section>
+
+    <section id="conectar-github">
+        <h2>4. Conectar con GitHub</h2>
+        <section id="crear-repo-github">
+            <h3>4.1 Crear un repositorio en GitHub</h3>
+            <ol>
+                <li>Ve a <a href="https://github.com">github.com</a> y crea una cuenta si no tienes una.</li>
+                <li>Haz clic en "New repository", asigna un nombre y crea el repositorio (público o privado).</li>
+            </ol>
+        </section>
+        <section id="vincular-repo">
+            <h3>4.2 Vincular un repositorio local a GitHub</h3>
+            <p>Conecta tu repositorio local con el remoto en GitHub:</p>
+            <pre><code>git remote add origin https://github.com/usuario/nombre_repositorio.git</code></pre>
+        </section>
+        <section id="subir-cambios">
+            <h3>4.3 Subir cambios a GitHub</h3>
+            <p>Envía tus commits al repositorio remoto:</p>
+            <pre><code>git push origin main  # O la rama que estés usando</code></pre>
+        </section>
+        <section id="clonar-repo">
+            <h3>4.4 Clonar un repositorio de GitHub</h3>
+            <p>Descarga un repositorio remoto a tu máquina local:</p>
+            <pre><code>git clone https://github.com/usuario/nombre_repositorio.git</code></pre>
+        </section>
+        <section id="actualizar-repo">
+            <h3>4.5 Actualizar tu repositorio local</h3>
+            <p>Trae los cambios del repositorio remoto:</p>
+            <pre><code>git pull origin main</code></pre>
+        </section>
+    </section>
+
+    <section id="ramas-github">
+        <h2>5. Trabajar con ramas en GitHub</h2>
+        <section id="subir-rama">
+            <h3>5.1 Subir una rama a GitHub</h3>
+            <p>Para subir una rama específica:</p>
+            <pre><code>git push origin nombre_rama</code></pre>
+        </section>
+        <section id="crear-pr">
+            <h3>5.2 Crear un Pull Request</h3>
+            <ol>
+                <li>En GitHub, selecciona la rama que subiste.</li>
+                <li>Haz clic en "Compare & pull request", describe los cambios y crea el pull request.</li>
+                <li>Una vez revisado, fusiónalo en la rama principal.</li>
+            </ol>
+        </section>
+    </section>
+
+    <section id="resolver-conflictos">
+        <h2>6. Resolución de Conflictos</h2>
+        <p>Si hay conflictos al fusionar o hacer pull:</p>
+        <ol>
+            <li>Abre los archivos conflictivos y edita las secciones marcadas con <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, y <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</li>
+            <li>Añade los archivos resueltos al staging:</li>
+            <pre><code>git add archivo_conflictivo</code></pre>
+            <li>Completa el merge o pull:</li>
+            <pre><code>git commit  # Para merge
+git pull  # Continúa el pull si es necesario</code></pre>
+        </ol>
+    </section>
+
+    <section id="comandos-adicionales">
+        <h2>7. Comandos Útiles Adicionales</h2>
+        <section id="deshacer-cambios">
+            <h3>7.1 Deshacer cambios</h3>
+            <p>Descarta cambios no confirmados:</p>
+            <pre><code>git restore nombre_archivo  # Descarta cambios en un archivo
+git restore .  # Descarta todos los cambios</code></pre>
+        </section>
+        <section id="revertir-commit">
+            <h3>7.2 Revertir un commit</h3>
+            <p>Crea un nuevo commit que deshace un commit anterior:</p>
+            <pre><code>git revert &lt;hash_del_commit&gt;</code></pre>
+        </section>
+        <section id="ver-diferencias">
+            <h3>7.3 Ver diferencias</h3>
+            <p>Muestra las diferencias entre archivos modificados y el último commit:</p>
+            <pre><code>git diff</code></pre>
+        </section>
+        <section id="ignorar-archivos">
+            <h3>7.4 Ignorar archivos</h3>
+            <p>Crea un archivo <code>.gitignore</code> para excluir archivos o directorios:</p>
+            <pre><code># Ejemplo de .gitignore
+node_modules/
+*.log
+.env</code></pre>
+        </section>
+    </section>
+
+    <section id="autenticacion-github">
+        <h2>8. Autenticación en GitHub</h2>
+        <section id="token-acceso">
+            <h3>8.1 Configurar un token de acceso personal</h3>
+            <ul>
+                <li>En GitHub, ve a Settings &gt; Developer settings &gt; Personal access tokens &gt; Generate new token.</li>
+                <li>Guarda el token y úsalo como contraseña al hacer push/pull.</li>
+            </ul>
+        </section>
+        <section id="configurar-ssh">
+            <h3>8.2 Configurar SSH (opcional)</h3>
+            <p>Genera una clave SSH y añádela a GitHub:</p>
+            <pre><code>ssh-keygen -t ed25519 -C "tu.email@ejemplo.com"
+cat ~/.ssh/id_ed25519.pub  # Copia la clave pública</code></pre>
+            <ol>
+                <li>En GitHub, ve a Settings &gt; SSH and GPG keys &gt; New SSH key y pega la clave.</li>
+                <li>Cambia el remoto a SSH:</li>
+                <pre><code>git remote set-url origin git@github.com:usuario/nombre_repositorio.git</code></pre>
+            </ol>
+        </section>
+    </section>
+
+    <section id="buenas-practicas">
+        <h2>9. Buenas Prácticas</h2>
+        <ul>
+            <li>Haz commits pequeños y con mensajes claros.</li>
+            <li>Usa ramas para nuevas funcionalidades o correcciones.</li>
+            <li>Mantén el repositorio remoto actualizado con <code>git pull</code> antes de trabajar.</li>
+            <li>Revisa los pull requests antes de fusionarlos.</li>
+        </ul>
+    </section>
+</body>
+</html>
